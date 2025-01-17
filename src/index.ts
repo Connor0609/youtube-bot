@@ -1,10 +1,38 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
-import { token } from "../config.json";
+import { Client, Events, GatewayIntentBits, MessageFlags } from "discord.js";
+import { discord_token } from "../config.json";
+import commands from "./commands/utility";
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const discord = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.once(Events.ClientReady, (readyClient) => {
+discord.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-client.login(token);
+discord.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) {
+    return;
+  }
+  const command = commands[interaction.commandName];
+  if (!command) {
+    console.log(`No command named ${interaction.commandName} was found.`);
+    return;
+  }
+  try {
+    await command.execute(interaction);
+  } catch (e) {
+    console.error(e);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: "There was an error executing this command",
+        flags: MessageFlags.Ephemeral,
+      });
+    } else {
+      await interaction.reply({
+        content: "There was an error executing this command",
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+  }
+});
+
+discord.login(discord_token);

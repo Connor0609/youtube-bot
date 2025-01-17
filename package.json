@@ -3,12 +3,19 @@
   "packageManager": "yarn@4.6.0",
   "devDependencies": {
     "@eslint/js": "^9.18.0",
+    "@types/gapi": "^0.0.47",
     "eslint": "^9.18.0",
     "globals": "^15.14.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },
   "dependencies": {
-    "discord.js": "^14.17.3"
+    "discord.js": "^14.17.3",
+    "gapi": "^0.0.3"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/src/index.js"
   }
 }
