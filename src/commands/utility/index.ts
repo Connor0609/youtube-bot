@@ -1,8 +1,12 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import search from "./search";
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+  SlashCommandOptionsOnlyBuilder,
+} from "discord.js";
+import youtube from "./search";
 
 export interface Command {
-  data: SlashCommandBuilder;
+  data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
@@ -11,7 +15,7 @@ export type Commands = {
 };
 
 const commands: Commands = {
-  search,
+  youtube,
 };
 
 export default commands;
